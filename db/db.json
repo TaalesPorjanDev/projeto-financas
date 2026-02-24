@@ -1,0 +1,10 @@
+{
+  "despesas": [],
+  "categorias": [
+    "Alimentação",
+    "Transporte",
+    "Lazer",
+    "Saúde",
+    "Outros"
+  ]
+}
