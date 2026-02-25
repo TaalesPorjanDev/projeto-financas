@@ -8,7 +8,7 @@
     <div>Categoria:</div>
     <div>Data:</div>
   </div>
-  <div v-for="despesa in todasDespesas" :key="despesa.id">
+  <div v-for="despesa in despesas.despesas" :key="despesa.id">
     <p>{{ despesa.descricao }}</p>
     <p>R$ {{ despesa.valor }}</p>
     <p>{{ despesa.categoria }}</p>
@@ -25,19 +25,11 @@
 <script setup>
 import Message from './Message.vue';
 import { ref, onMounted } from 'vue';
+import { useDespesasStore } from '@/stores/despesas';
 
 const msg = ref('');
-const todasDespesas = ref([]);
+const despesas = useDespesasStore()
 
-async function getDespesas() {
-  const req = await fetch('http://localhost:5000/despesas');
-  const data = await req.json();
-
-  todasDespesas.value = data.map((despesa) => ({
-    ...despesa,
-    status: despesa.status || 'Selecione',
-  }));
-}
 
 async function deletarDespesa(id) {
   const req = await fetch(`http://localhost:5000/despesas/${id}`, {
@@ -56,7 +48,7 @@ async function deletarDespesa(id) {
 
   // limpar os campos
 
-  getDespesas();
+  despesas.getDespesas()
 }
 
 async function updateDespesas(event, despesa) {
@@ -88,11 +80,11 @@ async function updateDespesas(event, despesa) {
   }, 3000);
 
   // limpar os campos
-  getDespesas();
+  despesas.getDespesas()
 }
 
 onMounted(() => {
-  getDespesas();
+  despesas.getDespesas()
 });
 </script>
 
