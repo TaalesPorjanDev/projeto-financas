@@ -5,7 +5,16 @@
       "descricao": "Moto",
       "valor": "1234.56",
       "categoria": "Alimentação",
-      "data": "2026-02-27"
+      "data": "2026-02-27",
+      "status": "Em andamento"
+    },
+    {
+      "id": "1f3e",
+      "descricao": "Moto",
+      "valor": "1222.22",
+      "categoria": "Alimentação",
+      "data": "2026-02-27",
+      "status": "Em andamento"
     }
   ],
   "categorias": [
