@@ -16,7 +16,7 @@
       </div>
       <div class="form-element">
         <label for="valor">Valor:</label>
-        <input type="number" id="valor" name="valor" v-model="valor" />
+        <Money3 v-model="valor" v-bind="moneyConfig" id="valor" class="input" />
       </div>
       <div class="form-element">
         <label for="categoria">Categoria:</label>
@@ -41,12 +41,21 @@
 <script setup>
 import Message from './Message.vue';
 import { ref } from 'vue';
+import { Money3 } from 'v-money3';
 
 const descricao = ref('');
 const valor = ref(0);
 const categoria = ref('');
 const data = ref('');
 const msg = ref('');
+
+const moneyConfig = {
+  prefix: 'R$',
+  thousands: '.',
+  decimal: ',',
+  precision: 2,
+  masked: false,
+};
 
 async function adicionarDespesa() {
   const data_despesas = {

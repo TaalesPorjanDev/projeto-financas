@@ -1,28 +1,11 @@
 {
   "despesas": [
     {
-      "id": "e83f",
+      "id": "2e5d",
       "descricao": "Moto",
-      "valor": 12,
-      "categoria": "Outros",
-      "data": "2026-02-24",
-      "status": "Pago"
-    },
-    {
-      "id": "c29f",
-      "descricao": "Carro",
-      "valor": 1222222,
+      "valor": "1234.56",
       "categoria": "Alimentação",
-      "data": "2026-02-24",
-      "status": "Pendente"
-    },
-    {
-      "id": "5f69",
-      "descricao": "Moto",
-      "valor": 100000,
-      "categoria": "Saúde",
-      "data": "2026-02-25",
-      "status": "Pendente"
+      "data": "2026-02-27"
     }
   ],
   "categorias": [

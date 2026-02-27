@@ -8,13 +8,17 @@
     <div>Categoria:</div>
     <div>Data:</div>
   </div>
+
   <div v-for="despesa in despesas.despesas" :key="despesa.id">
     <p>{{ despesa.descricao }}</p>
-    <p>R$ {{ despesa.valor }}</p>
+    <p>{{ formatarMoeda(despesa.valor) }}</p>
     <p>{{ despesa.categoria }}</p>
     <p>{{ despesa.dataDespesa }}</p>
-    <button @click="deletarDespesa(despesa.id)">Deletar</button>
-    <select v-model="despesa.status" @change="updateDespesas($event, despesa)">
+    <button @click="deleteDespesa(despesa.id)">Deletar</button>
+    <select
+      v-model="despesa.status"
+      @change="atualizarDespesas($event, despesa)"
+    >
       <option value="Em andamento">Em Andamento</option>
       <option value="Pendente">Pendente</option>
       <option value="Pago">Pago</option>
@@ -25,66 +29,42 @@
 <script setup>
 import Message from './Message.vue';
 import { ref, onMounted } from 'vue';
-import { useDespesasStore } from '@/stores/despesas';
-
+import { useDespesasStore } from '@/stores/store';
 const msg = ref('');
-const despesas = useDespesasStore()
 
+const despesas = useDespesasStore();
 
-async function deletarDespesa(id) {
-  const req = await fetch(`http://localhost:5000/despesas/${id}`, {
-    method: 'DELETE',
-  });
+function formatarMoeda(valor) {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(valor);
+}
 
-  const res = await req.json();
-
-  // coloca msg de remoção
+async function deleteDespesa(id) {
+  await despesas.deletarDespesa(id);
 
   msg.value = 'Pedido removido com sucesso !';
 
   setTimeout(() => {
     msg.value = '';
   }, 3000);
-
-  // limpar os campos
-
-  despesas.getDespesas()
 }
 
-async function updateDespesas(event, despesa) {
-  const option = event.target.value;
+async function atualizarDespesas(event, despesa) {
+  const novoStatus = event.target.value;
 
-  const dataAtualizada = {
-    ...despesa,
-    status: option,
-  };
+  await despesas.updateDespesas(despesa, novoStatus);
 
-  const dataJson = JSON.stringify(dataAtualizada);
+  msg.value = 'Despesa atualizada com sucesso!';
 
-  const req = await fetch(`http://localhost:5000/despesas/${despesa.id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: dataJson,
-  });
-
-  const res = await req.json();
-  console.log('Resposta', res);
-
-  // coloca uma mensagem de sistema
-
-  msg.value = `A despesa N° ${res.id} foi atualizada para ${res.status}!`;
-
-  // limpar mensagem
   setTimeout(() => {
     msg.value = '';
   }, 3000);
-
-  // limpar os campos
-  despesas.getDespesas()
 }
 
 onMounted(() => {
-  despesas.getDespesas()
+  despesas.getDespesas();
 });
 </script>
 
