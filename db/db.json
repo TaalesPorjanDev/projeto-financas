@@ -1,25 +1,12 @@
 {
   "despesas": [
     {
-      "id": "fd05",
-      "descricao": "",
-      "valor": "0.00",
-      "categoria": "",
-      "data": ""
-    },
-    {
-      "id": "7021",
-      "descricao": "",
-      "valor": 0,
-      "categoria": "",
-      "data": ""
-    },
-    {
-      "id": "84c9",
-      "descricao": "",
-      "valor": 0,
-      "categoria": "",
-      "data": ""
+      "id": "6f7b",
+      "descricao": "Moto",
+      "valor": "1210.00",
+      "categoria": "Alimentação",
+      "data": "2026-03-03",
+      "status": "Pago"
     }
   ],
   "categorias": [

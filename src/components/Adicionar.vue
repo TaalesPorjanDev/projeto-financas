@@ -1,27 +1,33 @@
 <template>
   <div>
-    <Message :msg="msg" v-show="msg" />
+    <Message :msg="store.msg" v-show="store.msg" />
   </div>
   <section class="adicionar-despesa">
     <h2>Adicionar Despesa</h2>
-    <form @submit.prevent="adicionarDespesa">
+    <form @submit.prevent="store.adicionarDespesa()">
       <div class="form-element">
         <label for="descricao">Descrição:</label>
         <input
           type="text"
           id="descricao"
           name="descricao"
-          v-model="descricao"
+          v-model="store.descricao"
           required
         />
       </div>
       <div class="form-element">
         <label for="valor">Valor:</label>
-        <Money3 v-model="valor" v-bind="moneyConfig" id="valor" class="input"  required/>
+        <Money3
+          v-model="store.valor"
+          v-bind="moneyConfig"
+          id="valor"
+          class="input"
+          required
+        />
       </div>
       <div class="form-element">
         <label for="categoria">Categoria:</label>
-        <select name="categoria" id="categoria" v-model="categoria">
+        <select name="categoria" id="categoria" v-model="store.categoria">
           <option value="Alimentação">Alimentação</option>
           <option value="Transporte">Transporte</option>
           <option value="Lazer">Lazer</option>
@@ -31,7 +37,7 @@
       </div>
       <div class="form-element">
         <label for="data">Data:</label>
-        <input type="date" id="data" name="data" v-model="data" />
+        <input type="date" id="data" name="data" v-model="store.data" />
       </div>
 
       <button type="submit">Adicionar Despesa</button>
@@ -41,14 +47,10 @@
 
 <script setup>
 import Message from './Message.vue';
-import { ref } from 'vue';
 import { Money3 } from 'v-money3';
+import { useDespesasStore } from '@/stores/store';
 
-const descricao = ref('');
-const valor = ref(0);
-const categoria = ref('');
-const data = ref('');
-const msg = ref('');
+const store = useDespesasStore();
 
 const moneyConfig = {
   prefix: 'R$',
@@ -56,45 +58,9 @@ const moneyConfig = {
   decimal: ',',
   precision: 2,
   masked: false,
+  max: 99999.99,
 };
 
-async function adicionarDespesa() {
-  const data_despesas = {
-    descricao: descricao.value,
-    valor: valor.value,
-    categoria: categoria.value,
-    data: data.value,
-  };
-
-  const dataJson = JSON.stringify(data_despesas);
-
-  try {
-    const req = await fetch('/api/despesas', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: dataJson,
-    });
-
-    if (req.ok) {
-      msg.value = 'Despesa adicionada com sucesso!';
-    } else {
-      msg.value = 'Não foi possivel adicionar , tente novamente! ';
-    }
-  } catch (error) {
-    console.log(error);
-  }
-
-  setTimeout(() => {
-    msg.value = '';
-  }, 3000);
-
-  // limpar os campos
-
-  descricao.value = '';
-  valor.value = 0;
-  categoria.value = '';
-  data.value = '';
-}
 </script>
 
 <style scoped>

@@ -43,6 +43,21 @@ function formatarMoeda(valor) {
   }).format(valor);
 }
 
+async function atualizarDespesas(event, despesa) {
+  const novoStatus = event.target.value;
+
+  try {
+    await despesas.updateDespesas(despesa, novoStatus);
+    msg.value = 'Despesa atualizada com sucesso!';
+  } catch (error) {
+    msg.value = 'Erro ao atualizar a despesa.';
+  } finally {
+    setTimeout(() => {
+      msg.value = '';
+    }, 3000);
+  }
+}
+
 async function deleteDespesa(id) {
   const confirmado = confirm('Tem certeza que deseja remover esta despesa?');
   if (!confirmado) return;
@@ -52,21 +67,6 @@ async function deleteDespesa(id) {
     msg.value = 'Despesa removida com sucesso !';
   } catch (error) {
     msg.value = 'Erro ao remover a despesa.';
-  } finally {
-    setTimeout(() => {
-      msg.value = '';
-    }, 3000);
-  }
-}
-
-async function atualizarDespesas(event, despesa) {
-  const novoStatus = event.target.value;
-
-  try {
-    await despesas.updateDespesas(despesa, novoStatus);
-    msg.value = 'Despesa atualizada com sucesso!';
-  } catch (error) {
-    msg.value = 'Erro ao atualizar a despesa.';
   } finally {
     setTimeout(() => {
       msg.value = '';

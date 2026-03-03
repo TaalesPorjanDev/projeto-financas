@@ -6,13 +6,46 @@ export const useDespesasStore = defineStore('despesas', {
     despesas: [],
     loading: false,
     error: null,
-  }),
+    descricao: '',
+    valor: 0,
+    categoria: '',
+    data: '',
+    msg: '',
+}),
 
   getters: {
     // aqui vão os valores calculados ( opcional por inquanto )
   },
 
   actions: {
+
+    async adicionarDespesa() {
+      this.loading = true;
+      this.error = null;
+
+      const data_despesas = {
+        descricao: this.descricao,
+        valor: this.valor,
+        categoria: this.categoria,
+        data: this.data
+      }
+
+      try {
+        await api.post('/despesas', data_despesas);
+        this.msg = 'Despesa adicionada com  sucesso!'
+
+        setTimeout(() => {
+        msg.value = '';
+        }, 3000);
+
+      } catch(error) {
+        this.error = 'Não foi possivel adicionar, tente novamente!'
+      } finally {
+        this.loading = false;
+      }
+
+      
+    },
     async getDespesas() {
       this.loading = true;
       this.error = null;
@@ -27,6 +60,10 @@ export const useDespesasStore = defineStore('despesas', {
         this.error = 'Erro ao carregar despesas.';
       } finally {
         this.loading = false;
+        this.descricao = '';
+        this.valor = 0;
+        this.categoria = '';
+        this.data = '';
       }
     },
 
