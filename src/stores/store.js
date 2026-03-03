@@ -33,15 +33,25 @@ export const useDespesasStore = defineStore('despesas', {
       try {
         await api.post('/despesas', data_despesas);
         this.msg = 'Despesa adicionada com  sucesso!'
+        
+        // limpar os campos
+        this.descricao = '';
+        this.valor = 0;
+        this.categoria = '';
+        this.data = '';
 
+        await this.getDespesas()
+        
         setTimeout(() => {
-        msg.value = '';
+        this.msg = '';
         }, 3000);
 
       } catch(error) {
         this.error = 'Não foi possivel adicionar, tente novamente!'
       } finally {
         this.loading = false;
+        
+        
       }
 
       
@@ -60,10 +70,7 @@ export const useDespesasStore = defineStore('despesas', {
         this.error = 'Erro ao carregar despesas.';
       } finally {
         this.loading = false;
-        this.descricao = '';
-        this.valor = 0;
-        this.categoria = '';
-        this.data = '';
+        
       }
     },
 

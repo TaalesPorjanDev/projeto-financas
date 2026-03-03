@@ -1,10 +1,24 @@
 {
   "despesas": [
     {
-      "id": "6f7b",
+      "id": "b588",
       "descricao": "Moto",
-      "valor": "1210.00",
-      "categoria": "Alimentação",
+      "valor": "120.00",
+      "categoria": "Transporte",
+      "data": "2026-03-03"
+    },
+    {
+      "id": "4a0c",
+      "descricao": "Carro",
+      "valor": "120.00",
+      "categoria": "Transporte",
+      "data": "2026-03-03"
+    },
+    {
+      "id": "adc5",
+      "descricao": "Carro",
+      "valor": "122.22",
+      "categoria": "Transporte",
       "data": "2026-03-03",
       "status": "Pago"
     }
