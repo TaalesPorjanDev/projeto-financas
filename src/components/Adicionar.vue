@@ -12,11 +12,12 @@
           id="descricao"
           name="descricao"
           v-model="descricao"
+          required
         />
       </div>
       <div class="form-element">
         <label for="valor">Valor:</label>
-        <Money3 v-model="valor" v-bind="moneyConfig" id="valor" class="input" />
+        <Money3 v-model="valor" v-bind="moneyConfig" id="valor" class="input"  required/>
       </div>
       <div class="form-element">
         <label for="categoria">Categoria:</label>

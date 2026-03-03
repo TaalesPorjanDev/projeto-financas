@@ -1,6 +1,6 @@
 <template>
   <div class="despesas-table">
-    <Message :msg="msg" v-show="msg" />
+    <Message :msg="msg || despesas.error" v-show="msg || despesas.error" />
   </div>
   <div id="despesas-table-heading">
     <div>Descrição:</div>
@@ -14,10 +14,13 @@
     <p>{{ formatarMoeda(despesa.valor) }}</p>
     <p>{{ despesa.categoria }}</p>
     <p>{{ despesa.dataDespesa }}</p>
-    <button @click="deleteDespesa(despesa.id)">Deletar</button>
+    <button @click="deleteDespesa(despesa.id)" :disabled="despesas.loading">
+      {{ despesas.loading ? 'Processando...' : 'Deletar' }}
+    </button>
     <select
       v-model="despesa.status"
       @change="atualizarDespesas($event, despesa)"
+      :disabled="despesas.loading"
     >
       <option value="Em andamento">Em Andamento</option>
       <option value="Pendente">Pendente</option>
@@ -31,7 +34,6 @@ import Message from './Message.vue';
 import { ref, onMounted } from 'vue';
 import { useDespesasStore } from '@/stores/store';
 const msg = ref('');
-
 const despesas = useDespesasStore();
 
 function formatarMoeda(valor) {
@@ -42,25 +44,34 @@ function formatarMoeda(valor) {
 }
 
 async function deleteDespesa(id) {
-  await despesas.deletarDespesa(id);
+  const confirmado = confirm('Tem certeza que deseja remover esta despesa?');
+  if (!confirmado) return;
 
-  msg.value = 'Pedido removido com sucesso !';
-
-  setTimeout(() => {
-    msg.value = '';
-  }, 3000);
+  try {
+    await despesas.deletarDespesa(id);
+    msg.value = 'Despesa removida com sucesso !';
+  } catch (error) {
+    msg.value = 'Erro ao remover a despesa.';
+  } finally {
+    setTimeout(() => {
+      msg.value = '';
+    }, 3000);
+  }
 }
 
 async function atualizarDespesas(event, despesa) {
   const novoStatus = event.target.value;
 
-  await despesas.updateDespesas(despesa, novoStatus);
-
-  msg.value = 'Despesa atualizada com sucesso!';
-
-  setTimeout(() => {
-    msg.value = '';
-  }, 3000);
+  try {
+    await despesas.updateDespesas(despesa, novoStatus);
+    msg.value = 'Despesa atualizada com sucesso!';
+  } catch (error) {
+    msg.value = 'Erro ao atualizar a despesa.';
+  } finally {
+    setTimeout(() => {
+      msg.value = '';
+    }, 3000);
+  }
 }
 
 onMounted(() => {

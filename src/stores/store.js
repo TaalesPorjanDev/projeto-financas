@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
+import api from '@/api/axios';
 
 export const useDespesasStore = defineStore('despesas', {
   state: () => ({
-    // aqui vão seus dados (refs)
     despesas: [],
+    loading: false,
+    error: null,
   }),
 
   getters: {
@@ -12,42 +14,51 @@ export const useDespesasStore = defineStore('despesas', {
 
   actions: {
     async getDespesas() {
-      const req = await fetch('http://localhost:5000/despesas');
-      const data = await req.json();
+      this.loading = true;
+      this.error = null;
 
-      const resultado = data.map((despesa) => ({
-        ...despesa,
-        status: despesa.status || 'Selecione',
+      try {
+        const { data } = await api.get('/despesas');
+        const resultado = data.map((despesa) => ({...despesa, status: despesa.status || 'Selecione',
       }));
 
       this.despesas = resultado;
+      } catch (error) {
+        this.error = 'Erro ao carregar despesas.';
+      } finally {
+        this.loading = false;
+      }
     },
 
     async updateDespesas(despesa, novoStatus) {
-      const dataAtualizada = {
-        ...despesa,
-        status: novoStatus,
-      };
+      this.loading = true;
+      this.error = null;
+      try {
+        const despesaAtualizada = {...despesa,status: novoStatus}
+        await api.put(`/despesas/${despesa.id}`, despesaAtualizada);
+        await this.getDespesas();
+      } catch(error) {
+        this.error = 'Erro ao atualizar despesa.';
 
-      const dataJson = JSON.stringify(dataAtualizada);
-
-      const req = await fetch(`http://localhost:5000/despesas/${despesa.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: dataJson,
-      });
-
-      await req.json();
-      await this.getDespesas();
+      } finally {
+        this.loading = false;
+      }
     },
 
+
     async deletarDespesa(id) {
-      const req = await fetch(`http://localhost:5000/despesas/${id}`, {
-        method: 'DELETE',
-      });
-    
-      await req.json()
-      await this.getDespesas();
+      this.loading = true;
+      this.error = null;
+
+      try {
+        await api.delete(`/despesas/${id}`)
+        await this.getDespesas();
+      } catch(error) {
+        this.error = 'Erro ao deletar despesa.'
+      } finally {
+        this.loading = false
+      }
+      
     },
   },
 });

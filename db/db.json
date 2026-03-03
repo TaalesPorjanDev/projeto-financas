@@ -1,20 +1,25 @@
 {
   "despesas": [
     {
-      "id": "2e5d",
-      "descricao": "Moto",
-      "valor": "1234.56",
-      "categoria": "Alimentação",
-      "data": "2026-02-27",
-      "status": "Em andamento"
+      "id": "fd05",
+      "descricao": "",
+      "valor": "0.00",
+      "categoria": "",
+      "data": ""
     },
     {
-      "id": "1f3e",
-      "descricao": "Moto",
-      "valor": "1222.22",
-      "categoria": "Alimentação",
-      "data": "2026-02-27",
-      "status": "Em andamento"
+      "id": "7021",
+      "descricao": "",
+      "valor": 0,
+      "categoria": "",
+      "data": ""
+    },
+    {
+      "id": "84c9",
+      "descricao": "",
+      "valor": 0,
+      "categoria": "",
+      "data": ""
     }
   ],
   "categorias": [
